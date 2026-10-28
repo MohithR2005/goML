@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Aurora — Festival drop</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <header>
+      <a class="brand" href="/">aurora<span>®</span></a
+      ><span class="header-tag">FESTIVAL EDITION / 001</span
+      ><span class="live"><i></i> Flash sale lab</span>
+    </header>
+    <main>
+      <section class="intro">
+        <div>
+          <p class="eyebrow">A LITTLE EXTRAORDINARY. EVERY DAY.</p>
+          <h1>One phone.<br /><span>500 possibilities.</span></h1>
+        </div>
+        <p class="intro-note">
+          Meet Aurora One. A limited festival drop,<br />built for the moments
+          worth keeping.
+        </p>
+      </section>
+      <section class="product-grid">
+        <div
+          class="product-art"
+          role="img"
+          aria-label="Illustration of a lavender Aurora One smartphone"
+        >
+          <span class="art-label">AURORA ONE / LAVENDER</span>
+          <div class="halo"></div>
+          <div class="phone back">
+            <div class="camera"><i></i><i></i><i></i><b></b></div>
+            <span class="phone-logo">a</span>
+          </div>
+          <div class="phone front">
+            <div class="island"></div>
+            <div class="wallpaper"></div>
+            <span class="phone-time">20:00</span
+            ><span class="phone-date">Make room for wonder.</span>
+          </div>
+          <span class="art-footer">DESIGNED TO STAND OUT.</span
+          ><span class="edition">01 / 500</span>
+        </div>
+        <div class="purchase">
+          <div class="pill">LIMITED FESTIVAL DROP</div>
+          <h2>Aurora One</h2>
+          <p class="description">
+            A brilliant display. All-day energy. A camera that sees what you
+            see.
+          </p>
+          <div class="specs">
+            <span>256 GB storage</span><span>12 GB memory</span
+            ><span>50 MP camera</span>
+          </div>
+          <div class="color">
+            <i></i> Lavender <span> / One unit per checkout</span>
+          </div>
+          <div class="price">
+            ₹29,999 <del>₹39,999</del><span>FESTIVAL PRICE</span>
+          </div>
+          <div class="sale-line">
+            <span id="sale-label">Connecting to sale…</span
+            ><strong id="availability">— / 500</strong>
+          </div>
+          <div class="stock-track"><div id="stock-bar"></div></div>
+          <button id="buy" disabled>Connecting… <span>↗</span></button>
+          <div id="feedback" class="feedback" aria-live="polite">
+            <strong id="status-title">Getting the latest availability</strong>
+            <p id="status-detail">
+              The final allocation is confirmed by the server.
+            </p>
+            <code id="attempt-label"></code>
+          </div>
+          <button id="recover" class="secondary" hidden>
+            Check or retry this attempt
+          </button>
+          <p class="fine-print">
+            Local demonstration. No payment is collected.<br />Reservation is
+            not confirmation. Each attempt is tracked.
+          </p>
+        </div>
+      </section>
+      <section class="telemetry">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">OBSERVE THE SYSTEM</p>
+            <h2>Behind the checkout.</h2>
+          </div>
+          <button id="refresh" class="text-button">
+            Refresh live metrics ↻
+          </button>
+        </div>
+        <div class="metric-grid">
+          <article>
+            <span>INITIAL INVENTORY</span><strong>500</strong
+            ><small>Physical units in this sale</small>
+          </article>
+          <article>
+            <span>AVAILABLE TOKENS</span><strong id="m-available">—</strong
+            ><small>Reservations still available</small>
+          </article>
+          <article>
+            <span>PROCESSING</span><strong id="m-pending">—</strong
+            ><small>Reserved, no final result yet</small>
+          </article>
+          <article>
+            <span>CONFIRMED ORDERS</span><strong id="m-confirmed">—</strong
+            ><small>Committed in PostgreSQL</small>
+          </article>
+        </div>
+        <div class="integrity">
+          <span id="integrity">Checking inventory conservation…</span
+          ><span id="updated">Not yet updated</span>
+        </div>
+        <details>
+          <summary>How this prototype processes an order</summary>
+          <p>
+            Browser → API → atomic Redis reservation + outbox → RabbitMQ →
+            worker → PostgreSQL transaction. Retries reuse the purchase-attempt
+            ID. The database enforces the final stock limit. Metrics are a local
+            observer view, not production storefront functionality.
+          </p>
+          <p id="db-stock"></p>
+        </details>
+      </section>
+    </main>
+    <footer>
+      <span>aurora / flash sale prototype</span
+      ><span>Real persistence. Observable outcomes.</span>
+    </footer>
+  </body>
+</html>

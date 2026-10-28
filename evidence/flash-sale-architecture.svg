@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1910" viewBox="0 0 1600 1910"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#164e63"/></marker></defs><rect width="1600" height="1910" fill="white"/>
+<text x="80" y="65" font-family="Arial, sans-serif" font-size="44" fill="#0f172a" font-weight="700">Flash-sale checkout architecture</text>
+<text x="80" y="108" font-family="Arial, sans-serif" font-size="25" fill="#334155" font-weight="400">500 phones • One unit per checkout • Payment processing outside this diagram</text>
+<text x="80" y="155" font-family="Arial, sans-serif" font-size="19" fill="#64748b" font-weight="700">CHECKOUT PROCESSING</text>
+<text x="1030" y="155" font-family="Arial, sans-serif" font-size="19" fill="#64748b" font-weight="700">BEHAVIOR AND GUARANTEES</text>
+<rect x="80" y="185" width="850" height="142" rx="14" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+<rect x="100" y="205" width="48" height="48" rx="14" fill="#164e63" stroke="#164e63" stroke-width="2"/>
+<text x="115" y="238" font-family="Arial, sans-serif" font-size="28" fill="white" font-weight="700">1</text>
+<text x="168" y="232" font-family="Arial, sans-serif" font-size="29" fill="#0f172a" font-weight="700">Customer browser + CDN</text>
+<text x="168" y="269" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">CDN serves HTML, CSS, JavaScript and images.</text>
+<text x="168" y="299" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Buy button sends one attempt ID; retries reuse the same ID.</text>
+<rect x="80" y="395" width="850" height="142" rx="14" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+<rect x="100" y="415" width="48" height="48" rx="14" fill="#164e63" stroke="#164e63" stroke-width="2"/>
+<text x="115" y="448" font-family="Arial, sans-serif" font-size="28" fill="white" font-weight="700">2</text>
+<text x="168" y="442" font-family="Arial, sans-serif" font-size="29" fill="#0f172a" font-weight="700">Gateway + load balancer</text>
+<text x="168" y="479" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Validate traffic, apply rate limits and reject abusive requests.</text>
+<text x="168" y="509" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Distribute permitted traffic across checkout API instances.</text>
+<rect x="80" y="605" width="850" height="142" rx="14" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+<rect x="100" y="625" width="48" height="48" rx="14" fill="#164e63" stroke="#164e63" stroke-width="2"/>
+<text x="115" y="658" font-family="Arial, sans-serif" font-size="28" fill="white" font-weight="700">3</text>
+<text x="168" y="652" font-family="Arial, sans-serif" font-size="29" fill="#0f172a" font-weight="700">Stateless checkout API</text>
+<text x="168" y="689" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Validate the purchase attempt and check duplicate requests.</text>
+<text x="168" y="719" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Coordinate reservation and durable acceptance of the work.</text>
+<rect x="80" y="815" width="850" height="142" rx="14" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+<rect x="100" y="835" width="48" height="48" rx="14" fill="#164e63" stroke="#164e63" stroke-width="2"/>
+<text x="115" y="868" font-family="Arial, sans-serif" font-size="28" fill="white" font-weight="700">4</text>
+<text x="168" y="862" font-family="Arial, sans-serif" font-size="29" fill="#0f172a" font-weight="700">Redis inventory reservation</text>
+<text x="168" y="899" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Atomic Lua operation: check stock, decrement, record attempt.</text>
+<text x="168" y="929" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">No token available → return unavailable; do not enqueue.</text>
+<rect x="80" y="1025" width="850" height="142" rx="14" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+<rect x="100" y="1045" width="48" height="48" rx="14" fill="#164e63" stroke="#164e63" stroke-width="2"/>
+<text x="115" y="1078" font-family="Arial, sans-serif" font-size="28" fill="white" font-weight="700">5</text>
+<text x="168" y="1072" font-family="Arial, sans-serif" font-size="29" fill="#0f172a" font-weight="700">Recoverable handoff + durable queue</text>
+<text x="168" y="1109" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Track pending publication; publish with broker confirmation.</text>
+<text x="168" y="1139" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Retry unresolved publication using the same attempt ID.</text>
+<rect x="80" y="1235" width="850" height="142" rx="14" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+<rect x="100" y="1255" width="48" height="48" rx="14" fill="#164e63" stroke="#164e63" stroke-width="2"/>
+<text x="115" y="1288" font-family="Arial, sans-serif" font-size="28" fill="white" font-weight="700">6</text>
+<text x="168" y="1282" font-family="Arial, sans-serif" font-size="29" fill="#0f172a" font-weight="700">Background workers</text>
+<text x="168" y="1319" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Consume queued requests with bounded concurrency.</text>
+<text x="168" y="1349" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Retry safely; acknowledge the message after database commit.</text>
+<rect x="80" y="1445" width="850" height="142" rx="14" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+<rect x="100" y="1465" width="48" height="48" rx="14" fill="#164e63" stroke="#164e63" stroke-width="2"/>
+<text x="115" y="1498" font-family="Arial, sans-serif" font-size="28" fill="white" font-weight="700">7</text>
+<text x="168" y="1492" font-family="Arial, sans-serif" font-size="29" fill="#0f172a" font-weight="700">Relational database — final authority</text>
+<text x="168" y="1529" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">One transaction: deduplicate, conditionally reduce stock,</text>
+<text x="168" y="1559" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">create order and record final status; commit together.</text>
+<path d="M 505 331 V 385" stroke="#164e63" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+<path d="M 505 541 V 595" stroke="#164e63" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+<path d="M 505 751 V 805" stroke="#164e63" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+<path d="M 505 961 V 1015" stroke="#164e63" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+<path d="M 505 1171 V 1225" stroke="#164e63" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+<path d="M 505 1381 V 1435" stroke="#164e63" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+<text x="1030" y="217" font-family="Arial, sans-serif" font-size="26" fill="#164e63" font-weight="700">Customer feedback</text>
+<text x="1030" y="255" font-family="Arial, sans-serif" font-size="22" fill="#334155" font-weight="400">Show pending while work is running.</text>
+<text x="1030" y="285" font-family="Arial, sans-serif" font-size="22" fill="#334155" font-weight="400">Confirm only after the order commits.</text>
+<text x="1030" y="315" font-family="Arial, sans-serif" font-size="22" fill="#334155" font-weight="400">Disable repeated clicks immediately.</text>
+<text x="1030" y="427" font-family="Arial, sans-serif" font-size="26" fill="#164e63" font-weight="700">Traffic handling</text>
+<text x="1030" y="465" font-family="Arial, sans-serif" font-size="22" fill="#334155" font-weight="400">Explicit responses for invalid, limited</text>
+<text x="1030" y="495" font-family="Arial, sans-serif" font-size="22" fill="#334155" font-weight="400">or unavailable requests. Capacity must</text>
+<text x="1030" y="525" font-family="Arial, sans-serif" font-size="22" fill="#334155" font-weight="400">be measured under realistic load.</text>
+<text x="1030" y="637" font-family="Arial, sans-serif" font-size="26" fill="#164e63" font-weight="700">Acceptance is not confirmation</text>
+<text x="1030" y="675" font-family="Arial, sans-serif" font-size="22" fill="#334155" font-weight="400">Return 202 + tracking URL only after</text>
+<text x="1030" y="705" font-family="Arial, sans-serif" font-size="22" fill="#334155" font-weight="400">durable acceptance. A timeout leaves</text>
+<text x="1030" y="735" font-family="Arial, sans-serif" font-size="22" fill="#334155" font-weight="400">the outcome unknown; query status.</text>
+<text x="1030" y="847" font-family="Arial, sans-serif" font-size="26" fill="#164e63" font-weight="700">Fast admission control</text>
+<text x="1030" y="885" font-family="Arial, sans-serif" font-size="22" fill="#334155" font-weight="400">Initially, at most 500 distinct attempts</text>
+<text x="1030" y="915" font-family="Arial, sans-serif" font-size="22" fill="#334155" font-weight="400">reserve tokens. Redis atomicity does</text>
+<text x="1030" y="945" font-family="Arial, sans-serif" font-size="22" fill="#334155" font-weight="400">not cover the queue or SQL database.</text>
+<text x="1030" y="1057" font-family="Arial, sans-serif" font-size="26" fill="#164e63" font-weight="700">Recovery is required</text>
+<text x="1030" y="1095" font-family="Arial, sans-serif" font-size="22" fill="#334155" font-weight="400">Redis reservation + queue publication</text>
+<text x="1030" y="1125" font-family="Arial, sans-serif" font-size="22" fill="#334155" font-weight="400">are separate writes. Recover pending</text>
+<text x="1030" y="1155" font-family="Arial, sans-serif" font-size="22" fill="#334155" font-weight="400">handoffs; tolerate duplicate delivery.</text>
+<text x="1030" y="1267" font-family="Arial, sans-serif" font-size="26" fill="#164e63" font-weight="700">Control database pressure</text>
+<text x="1030" y="1305" font-family="Arial, sans-serif" font-size="22" fill="#334155" font-weight="400">Limit simultaneous inventory writes.</text>
+<text x="1030" y="1335" font-family="Arial, sans-serif" font-size="22" fill="#334155" font-weight="400">Queues reduce bursts, not query count.</text>
+<text x="1030" y="1365" font-family="Arial, sans-serif" font-size="22" fill="#334155" font-weight="400">Fix N+1 with joins or batch fetching.</text>
+<text x="1030" y="1477" font-family="Arial, sans-serif" font-size="26" fill="#164e63" font-weight="700">Prevent overselling and duplicates</text>
+<text x="1030" y="1515" font-family="Arial, sans-serif" font-size="22" fill="#334155" font-weight="400">UPDATE only WHERE stock &gt; 0; verify</text>
+<text x="1030" y="1545" font-family="Arial, sans-serif" font-size="22" fill="#334155" font-weight="400">one row changed. Enforce a UNIQUE</text>
+<text x="1030" y="1575" font-family="Arial, sans-serif" font-size="22" fill="#334155" font-weight="400">attempt ID. Keep transactions short.</text>
+<rect x="80" y="1640" width="1440" height="100" rx="14" fill="#ecfeff" stroke="#a5f3fc" stroke-width="2"/>
+<text x="105" y="1676" font-family="Arial, sans-serif" font-size="20" fill="#164e63" font-weight="700">STATUS PATH</text>
+<text x="105" y="1713" font-family="Arial, sans-serif" font-size="26" fill="#0f172a" font-weight="400">Browser → gateway → status API → request / order status → browser (bounded polling)</text>
+<text x="80" y="1795" font-family="Arial, sans-serif" font-size="20" fill="#164e63" font-weight="700">RECOVERY RULE</text>
+<text x="80" y="1832" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Resolve uncertain outcomes before releasing reservations. Reconcile Redis with durable records after failure.</text>
+<text x="80" y="1870" font-family="Arial, sans-serif" font-size="21" fill="#64748b" font-weight="400">Logical design: the reservation-to-queue handoff requires a concrete persistence and recovery implementation.</text>
+</svg>

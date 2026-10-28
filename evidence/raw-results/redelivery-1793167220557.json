@@ -1,0 +1,6 @@
+{
+  "startedAt": "2026-10-28T06:00:20.088Z",
+  "test": "broker-redelivery-after-commit",
+  "passed": false,
+  "failure": "fetch failed"
+}

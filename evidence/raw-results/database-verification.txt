@@ -1,0 +1,9 @@
+ stock | initial_stock | confirmed_orders | conserved 
+-------+---------------+------------------+-----------
+     0 |           500 |              500 | t
+(1 row)
+
+ attempt_id | count 
+------------+-------
+(0 rows)
+

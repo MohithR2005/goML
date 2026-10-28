@@ -1,0 +1,20 @@
+{
+  "name": "flash-sale-lab",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dispatcher": "node backend/dispatcher.js",
+    "worker": "node backend/worker.js",
+    "test": "node --test tests/unit.test.js",
+    "test:load": "node tests/load-test.js",
+    "test:recovery": "node tests/recovery-test.js"
+  },
+  "dependencies": {
+    "amqplib": "0.10.9",
+    "pg": "8.16.3",
+    "redis": "5.8.2"
+  },
+  "engines": { "node": ">=22" }
+}

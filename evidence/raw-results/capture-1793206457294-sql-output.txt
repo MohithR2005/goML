@@ -1,0 +1,12 @@
+INVENTORY CONSERVATION
+ stock | initial_stock | confirmed_orders | conserved 
+-------+---------------+------------------+-----------
+     0 |           500 |              500 | t
+(1 row)
+
+
+DUPLICATE ORDER ATTEMPTS
+ attempt_id | count 
+------------+-------
+(0 rows)
+

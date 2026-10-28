@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="2390" viewBox="0 0 1800 2390"><defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#64748b"/></marker></defs><rect width="1800" height="2390" fill="white"/>
+<text x="70" y="68" font-family="Arial, sans-serif" font-size="44" fill="#0f172a" font-weight="700">End-to-end checkout flow</text>
+<text x="70" y="112" font-family="Arial, sans-serif" font-size="25" fill="#334155" font-weight="400">One phone per attempt • Same attempt ID across retries • Confirmation only after database commit</text>
+<rect x="90" y="165" width="920" height="115" rx="14" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+<text x="114" y="205" font-family="Arial, sans-serif" font-size="27" fill="#0f172a" font-weight="700">1  Customer clicks Buy</text>
+<text x="114" y="243" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Disable repeated clicks; send product ID + unique attempt ID.</text>
+<rect x="90" y="345" width="920" height="115" rx="14" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+<text x="114" y="385" font-family="Arial, sans-serif" font-size="27" fill="#0f172a" font-weight="700">2  Gateway and checkout API validate the request</text>
+<text x="114" y="423" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Apply rate limits, check sale timing and validate purchase details.</text>
+<rect x="90" y="525" width="920" height="115" rx="14" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+<text x="114" y="565" font-family="Arial, sans-serif" font-size="27" fill="#0f172a" font-weight="700">3  Check existing attempt</text>
+<text x="114" y="603" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Return its status if known; enforce deduplication at later steps too.</text>
+<rect x="90" y="705" width="920" height="145" rx="14" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+<text x="114" y="745" font-family="Arial, sans-serif" font-size="27" fill="#0f172a" font-weight="700">4  Atomically reserve inventory in Redis</text>
+<text x="114" y="783" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Check attempt + available tokens; decrement and record together.</text>
+<text x="114" y="814" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Existing reservation → resume without taking another token.</text>
+<rect x="90" y="915" width="920" height="145" rx="14" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+<text x="114" y="955" font-family="Arial, sans-serif" font-size="27" fill="#0f172a" font-weight="700">5  Recoverable handoff to a durable queue</text>
+<text x="114" y="993" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Track pending publication and resolve interrupted handoffs.</text>
+<text x="114" y="1024" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">After durable acceptance: return 202 + tracking URL.</text>
+<rect x="90" y="1125" width="920" height="115" rx="14" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+<text x="114" y="1165" font-family="Arial, sans-serif" font-size="27" fill="#0f172a" font-weight="700">6  Worker receives accepted checkout work</text>
+<text x="114" y="1203" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Process with bounded concurrency; reuse the same attempt ID.</text>
+<rect x="90" y="1305" width="920" height="175" rx="14" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+<text x="114" y="1345" font-family="Arial, sans-serif" font-size="27" fill="#0f172a" font-weight="700">7  Execute one database transaction</text>
+<text x="114" y="1383" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Deduplicate; conditionally decrement only WHERE stock &gt; 0.</text>
+<text x="114" y="1414" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Verify the update succeeded; create order with unique attempt ID.</text>
+<text x="114" y="1445" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Commit inventory change, order and final status together.</text>
+<path d="M550 280 V340" fill="none" stroke="#64748b" stroke-width="3"  marker-end="url(#a)"/>
+<path d="M550 460 V520" fill="none" stroke="#64748b" stroke-width="3"  marker-end="url(#a)"/>
+<path d="M550 640 V700" fill="none" stroke="#64748b" stroke-width="3"  marker-end="url(#a)"/>
+<path d="M550 850 V910" fill="none" stroke="#64748b" stroke-width="3"  marker-end="url(#a)"/>
+<path d="M550 1060 V1120" fill="none" stroke="#64748b" stroke-width="3"  marker-end="url(#a)"/>
+<path d="M550 1240 V1300" fill="none" stroke="#64748b" stroke-width="3"  marker-end="url(#a)"/>
+<rect x="1130" y="345" width="590" height="115" rx="14" fill="#fff7ed" stroke="#cbd5e1" stroke-width="2"/>
+<text x="1154" y="385" font-family="Arial, sans-serif" font-size="27" fill="#0f172a" font-weight="700">Request rejected</text>
+<text x="1154" y="423" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Return clear invalid / rate-limited response.</text>
+<path d="M1010 402 H1125" fill="none" stroke="#64748b" stroke-width="3"  marker-end="url(#a)"/>
+<rect x="1130" y="525" width="590" height="115" rx="14" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+<text x="1154" y="565" font-family="Arial, sans-serif" font-size="27" fill="#0f172a" font-weight="700">Attempt already recorded</text>
+<text x="1154" y="603" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Return current result; no new purchase.</text>
+<path d="M1010 582 H1125" fill="none" stroke="#64748b" stroke-width="3"  marker-end="url(#a)"/>
+<rect x="1130" y="705" width="590" height="145" rx="14" fill="#fff7ed" stroke="#cbd5e1" stroke-width="2"/>
+<text x="1154" y="745" font-family="Arial, sans-serif" font-size="27" fill="#0f172a" font-weight="700">No token available</text>
+<text x="1154" y="783" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Return “Currently unavailable”.</text>
+<text x="1154" y="814" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Do not enqueue this purchase attempt.</text>
+<path d="M1010 778 H1125" fill="none" stroke="#64748b" stroke-width="3"  marker-end="url(#a)"/>
+<rect x="1130" y="915" width="590" height="145" rx="14" fill="#fff7ed" stroke="#cbd5e1" stroke-width="2"/>
+<text x="1154" y="955" font-family="Arial, sans-serif" font-size="27" fill="#0f172a" font-weight="700">Publication failed or uncertain</text>
+<text x="1154" y="993" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Recover and retry the same attempt.</text>
+<text x="1154" y="1024" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Do not silently lose accepted work.</text>
+<path d="M1010 988 H1125" fill="none" stroke="#64748b" stroke-width="3"  marker-end="url(#a)"/>
+<text x="1130" y="1160" font-family="Arial, sans-serif" font-size="22" fill="#164e63" font-weight="700">CUSTOMER WAITS</text>
+<text x="1130" y="1200" font-family="Arial, sans-serif" font-size="25" fill="#334155" font-weight="400">202 Accepted means pending,</text>
+<text x="1130" y="1235" font-family="Arial, sans-serif" font-size="25" fill="#0f172a" font-weight="700">not purchase confirmed.</text>
+<path d="M550 1480 V1520 H340 V1570" fill="none" stroke="#64748b" stroke-width="3"  marker-end="url(#a)"/>
+<path d="M550 1520 H900 V1570" fill="none" stroke="#64748b" stroke-width="3"  marker-end="url(#a)"/>
+<path d="M900 1520 H1460 V1570" fill="none" stroke="#64748b" stroke-width="3"  marker-end="url(#a)"/>
+<rect x="70" y="1575" width="540" height="170" rx="14" fill="#ecfdf5" stroke="#cbd5e1" stroke-width="2"/>
+<text x="94" y="1615" font-family="Arial, sans-serif" font-size="27" fill="#0f172a" font-weight="700">Commit succeeds</text>
+<text x="94" y="1653" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Record confirmed order.</text>
+<text x="94" y="1684" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Acknowledge the queue message.</text>
+<text x="94" y="1715" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">A replay returns the existing result.</text>
+<rect x="630" y="1575" width="540" height="170" rx="14" fill="#fff7ed" stroke="#cbd5e1" stroke-width="2"/>
+<text x="654" y="1615" font-family="Arial, sans-serif" font-size="27" fill="#0f172a" font-weight="700">Definite failure / rollback</text>
+<text x="654" y="1653" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Temporary failure → retry safely.</text>
+<text x="654" y="1684" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Permanent failure → record failure.</text>
+<text x="654" y="1715" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">No partial order or stock update.</text>
+<rect x="1190" y="1575" width="540" height="170" rx="14" fill="#fff7ed" stroke="#cbd5e1" stroke-width="2"/>
+<text x="1214" y="1615" font-family="Arial, sans-serif" font-size="27" fill="#0f172a" font-weight="700">Commit outcome uncertain</text>
+<text x="1214" y="1653" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Read the persistent attempt result.</text>
+<text x="1214" y="1684" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Resolve before retrying or releasing</text>
+<text x="1214" y="1715" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">any inventory reservation.</text>
+<text x="70" y="1825" font-family="Arial, sans-serif" font-size="25" fill="#164e63" font-weight="700">CUSTOMER STATUS UPDATES</text>
+<rect x="70" y="1860" width="1660" height="110" rx="14" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+<text x="94" y="1900" font-family="Arial, sans-serif" font-size="27" fill="#0f172a" font-weight="700">Frontend polls the status endpoint at controlled intervals</text>
+<text x="94" y="1938" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Pending → keep waiting     |     Confirmed / failed → show result and stop polling</text>
+<text x="95" y="2010" font-family="Arial, sans-serif" font-size="24" fill="#334155" font-weight="400">A network timeout does not prove failure. Check the same attempt instead of creating another purchase.</text>
+<text x="70" y="2090" font-family="Arial, sans-serif" font-size="25" fill="#164e63" font-weight="700">RECOVERY OF UNFINISHED ATTEMPTS</text>
+<rect x="70" y="2125" width="540" height="155" rx="14" fill="#ecfdf5" stroke="#cbd5e1" stroke-width="2"/>
+<text x="94" y="2165" font-family="Arial, sans-serif" font-size="27" fill="#0f172a" font-weight="700">Order already committed</text>
+<text x="94" y="2203" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Preserve confirmation.</text>
+<text x="94" y="2234" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Do not release its reservation.</text>
+<rect x="630" y="2125" width="540" height="155" rx="14" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+<text x="654" y="2165" font-family="Arial, sans-serif" font-size="27" fill="#0f172a" font-weight="700">Work can be recovered</text>
+<text x="654" y="2203" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Resume the same purchase attempt.</text>
+<text x="654" y="2234" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Prevent duplicate processing.</text>
+<rect x="1190" y="2125" width="540" height="155" rx="14" fill="#fff7ed" stroke="#cbd5e1" stroke-width="2"/>
+<text x="1214" y="2165" font-family="Arial, sans-serif" font-size="27" fill="#0f172a" font-weight="700">Permanently cancelled</text>
+<text x="1214" y="2203" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Block delayed completion first.</text>
+<text x="1214" y="2234" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Release reservation exactly once.</text>
+<text x="70" y="2340" font-family="Arial, sans-serif" font-size="23" fill="#334155" font-weight="400">Redis reservation and queue publication are separate writes: durable tracking and recovery are required.</text>
+</svg>

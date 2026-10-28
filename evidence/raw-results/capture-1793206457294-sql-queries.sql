@@ -1,0 +1,2 @@
+SELECT stock, initial_stock, (SELECT count(*) FROM orders) AS confirmed_orders, stock + (SELECT count(*) FROM orders) = initial_stock AS conserved FROM inventory;
+SELECT attempt_id, count(*) FROM orders GROUP BY attempt_id HAVING count(*) > 1;

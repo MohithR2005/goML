@@ -1,0 +1,49 @@
+{
+  "startedAt": "2026-10-28T16:55:14.081Z",
+  "base": "http://localhost:8080",
+  "requests": 1000,
+  "concurrency": 50,
+  "before": {
+    "stock": 500,
+    "initial_stock": 500,
+    "confirmed": 0,
+    "failed": 0,
+    "available": 500,
+    "pending": 0,
+    "conserved": true,
+    "serverTime": 1793206514062,
+    "saleStart": 1793145600000
+  },
+  "checks": {
+    "noOverselling": true,
+    "inventoryConservation": true,
+    "duplicateRetries": true,
+    "conflictingIdentityRejected": true,
+    "otherCustomerStatusHidden": true,
+    "allAcceptedSettled": true
+  },
+  "samples": "1000 raw samples in /evidence/load-1793206527796.json",
+  "submissionDurationMs": 5349,
+  "accepted": 500,
+  "unavailable": 500,
+  "errors": 0,
+  "latencyMs": {
+    "p50": 220.4,
+    "p95": 611.45,
+    "p99": 685.47
+  },
+  "after": {
+    "stock": 0,
+    "initial_stock": 500,
+    "confirmed": 500,
+    "failed": 0,
+    "available": 0,
+    "pending": 0,
+    "conserved": true,
+    "serverTime": 1793206527756,
+    "saleStart": 1793145600000
+  },
+  "passed": true,
+  "finishedAt": "2026-10-28T16:55:27.781Z",
+  "totalDurationMs": 13698
+}

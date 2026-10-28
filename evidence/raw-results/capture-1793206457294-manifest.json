@@ -1,0 +1,176 @@
+{
+  "capturedAt": "2026-10-28T16:54:17.295Z",
+  "timeZone": "Asia/Kolkata",
+  "screenshots": [
+    {
+      "name": "01-services-running.png",
+      "title": "All six services are running",
+      "source": "capture-1793206457294-01-services-running.html"
+    },
+    {
+      "name": "02-fresh-sale.png",
+      "title": "Fresh sale with 500 available units",
+      "source": "Live application at http://localhost:8080"
+    },
+    {
+      "name": "03-load-test-results.png",
+      "title": "Concurrent checkout test passed",
+      "source": "capture-1793206457294-03-load-test-results.html"
+    },
+    {
+      "name": "04-sale-completed.png",
+      "title": "Settled sale with 500 confirmed orders",
+      "source": "Live application at http://localhost:8080"
+    },
+    {
+      "name": "05-database-verification.png",
+      "title": "Database verification",
+      "source": "capture-1793206457294-05-database-verification.html"
+    },
+    {
+      "name": "06-pending-worker-stopped.png",
+      "title": "Accepted checkout remains pending while worker is stopped",
+      "source": "Live application at http://localhost:8080"
+    },
+    {
+      "name": "07-confirmed-after-restart.png",
+      "title": "Same purchase confirmed after worker restart and page reload",
+      "source": "Live application at http://localhost:8080"
+    },
+    {
+      "name": "08-duplicate-delivery-test.png",
+      "title": "Duplicate broker delivery test passed",
+      "source": "capture-1793206457294-08-duplicate-delivery-test.html"
+    }
+  ],
+  "rawFiles": [
+    "capture-1793206457294-services.jsonl",
+    "capture-1793206457294-01-services-running.html",
+    "capture-1793206457294-fresh-metrics.json",
+    "capture-1793206457294-load-stdout.json",
+    "capture-1793206457294-03-load-test-results.html",
+    "capture-1793206457294-sql-output.txt",
+    "capture-1793206457294-sql-queries.sql",
+    "capture-1793206457294-05-database-verification.html",
+    "capture-1793206457294-browser-recovery.json",
+    "capture-1793206457294-redelivery-stdout.json",
+    "capture-1793206457294-08-duplicate-delivery-test.html"
+  ],
+  "load": {
+    "startedAt": "2026-10-28T16:55:14.081Z",
+    "base": "http://localhost:8080",
+    "requests": 1000,
+    "concurrency": 50,
+    "before": {
+      "stock": 500,
+      "initial_stock": 500,
+      "confirmed": 0,
+      "failed": 0,
+      "available": 500,
+      "pending": 0,
+      "conserved": true,
+      "serverTime": 1793206514062,
+      "saleStart": 1793145600000
+    },
+    "checks": {
+      "noOverselling": true,
+      "inventoryConservation": true,
+      "duplicateRetries": true,
+      "conflictingIdentityRejected": true,
+      "otherCustomerStatusHidden": true,
+      "allAcceptedSettled": true
+    },
+    "samples": "1000 raw samples in /evidence/load-1793206527796.json",
+    "submissionDurationMs": 5349,
+    "accepted": 500,
+    "unavailable": 500,
+    "errors": 0,
+    "latencyMs": {
+      "p50": 220.4,
+      "p95": 611.45,
+      "p99": 685.47
+    },
+    "after": {
+      "stock": 0,
+      "initial_stock": 500,
+      "confirmed": 500,
+      "failed": 0,
+      "available": 0,
+      "pending": 0,
+      "conserved": true,
+      "serverTime": 1793206527756,
+      "saleStart": 1793145600000
+    },
+    "passed": true,
+    "finishedAt": "2026-10-28T16:55:27.781Z",
+    "totalDurationMs": 13698
+  },
+  "browserRecovery": {
+    "attemptId": "5bdece89-2fda-4ac5-a4c7-2da0fb5a6848",
+    "pending": {
+      "stock": 500,
+      "initial_stock": 500,
+      "confirmed": 0,
+      "failed": 0,
+      "available": 499,
+      "pending": 1,
+      "conserved": true,
+      "serverTime": 1793206553176,
+      "saleStart": 1793145600000
+    },
+    "after": {
+      "stock": 499,
+      "initial_stock": 500,
+      "confirmed": 1,
+      "failed": 0,
+      "available": 499,
+      "pending": 0,
+      "conserved": true,
+      "serverTime": 1793206557555,
+      "saleStart": 1793145600000
+    },
+    "sameAttemptAfterReload": true,
+    "pageErrors": []
+  },
+  "redelivery": {
+    "startedAt": "2026-10-28T16:56:20.383Z",
+    "test": "broker-redelivery-after-commit",
+    "before": {
+      "stock": 500,
+      "initial_stock": 500,
+      "confirmed": 0,
+      "failed": 0,
+      "available": 500,
+      "pending": 0,
+      "conserved": true,
+      "serverTime": 1793206580496,
+      "saleStart": 1793145600000
+    },
+    "after": {
+      "stock": 499,
+      "initial_stock": 500,
+      "confirmed": 1,
+      "failed": 0,
+      "available": 499,
+      "pending": 0,
+      "conserved": true,
+      "serverTime": 1793206582301,
+      "saleStart": 1793145600000
+    },
+    "duplicateBrokerDeliveries": 5,
+    "recordedDeliveries": 6,
+    "ordersForAttempt": 1,
+    "passed": true
+  },
+  "finalState": {
+    "stock": 500,
+    "initial_stock": 500,
+    "confirmed": 0,
+    "failed": 0,
+    "available": 500,
+    "pending": 0,
+    "conserved": true,
+    "serverTime": 1793206600380,
+    "saleStart": 1793145600000
+  }
+}

@@ -1,0 +1,74 @@
+name: flash-sale-lab
+x-app: &app
+  build: .
+  restart: unless-stopped
+  environment: &env
+    DATABASE_URL: postgres://flashsale:${POSTGRES_PASSWORD:-flashsale-local-only}@postgres:5432/flashsale
+    REDIS_URL: redis://redis:6379
+    AMQP_URL: amqp://flashsale:${RABBITMQ_PASSWORD:-flashsale-local-only}@rabbitmq:5672
+    SALE_START: ${SALE_START:-2026-10-28T00:00:00Z}
+    WORKER_CONCURRENCY: ${WORKER_CONCURRENCY:-4}
+    WORKER_DELAY_MS: ${WORKER_DELAY_MS:-60}
+    RATE_LIMIT: ${RATE_LIMIT:-60}
+  depends_on:
+    postgres: {condition: service_healthy}
+    redis: {condition: service_healthy}
+    rabbitmq: {condition: service_healthy}
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: flashsale
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-flashsale-local-only}
+      POSTGRES_DB: flashsale
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/001-init.sql:ro
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U flashsale -d flashsale]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+  redis:
+    image: redis:7.4-alpine
+    command: [redis-server, --appendonly, 'yes', --appendfsync, always, --maxmemory-policy, noeviction]
+    volumes: [redis-data:/data]
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    hostname: rabbitmq
+    user: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: flashsale
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-flashsale-local-only}
+    volumes: [rabbit-data:/var/lib/rabbitmq]
+    ports: ['127.0.0.1:15672:15672']
+    healthcheck:
+      test: [CMD, rabbitmq-diagnostics, -q, check_port_connectivity]
+      interval: 5s
+      timeout: 15s
+      retries: 30
+  api:
+    <<: *app
+    ports: ['127.0.0.1:${APP_PORT:-8080}:8080']
+    volumes: ['../evidence/raw-results:/evidence']
+    command: [node, backend/server.js]
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://localhost:8080/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+  dispatcher:
+    <<: *app
+    command: [node, backend/dispatcher.js]
+  worker:
+    <<: *app
+    command: [node, backend/worker.js]
+volumes:
+  postgres-data:
+  redis-data:
+  rabbit-data:

@@ -1,0 +1,38 @@
+{
+  "service": "worker",
+  "startedAt": "2026-10-28T06:02:58.489Z",
+  "before": {
+    "stock": 500,
+    "initial_stock": 500,
+    "confirmed": 0,
+    "failed": 0,
+    "available": 500,
+    "pending": 0,
+    "conserved": true,
+    "serverTime": 1793167379130,
+    "saleStart": 1793145600000
+  },
+  "whileStopped": {
+    "stock": 500,
+    "initial_stock": 500,
+    "confirmed": 0,
+    "failed": 0,
+    "available": 499,
+    "pending": 1,
+    "conserved": true,
+    "serverTime": 1793167383161,
+    "saleStart": 1793145600000
+  },
+  "after": {
+    "stock": 499,
+    "initial_stock": 500,
+    "confirmed": 1,
+    "failed": 0,
+    "available": 499,
+    "pending": 0,
+    "conserved": true,
+    "serverTime": 1793167386833,
+    "saleStart": 1793145600000
+  },
+  "passed": true
+}

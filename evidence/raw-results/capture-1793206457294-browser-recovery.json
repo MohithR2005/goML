@@ -1,0 +1,27 @@
+{
+  "attemptId": "5bdece89-2fda-4ac5-a4c7-2da0fb5a6848",
+  "pending": {
+    "stock": 500,
+    "initial_stock": 500,
+    "confirmed": 0,
+    "failed": 0,
+    "available": 499,
+    "pending": 1,
+    "conserved": true,
+    "serverTime": 1793206553176,
+    "saleStart": 1793145600000
+  },
+  "after": {
+    "stock": 499,
+    "initial_stock": 500,
+    "confirmed": 1,
+    "failed": 0,
+    "available": 499,
+    "pending": 0,
+    "conserved": true,
+    "serverTime": 1793206557555,
+    "saleStart": 1793145600000
+  },
+  "sameAttemptAfterReload": true,
+  "pageErrors": []
+}

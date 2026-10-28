@@ -1,0 +1,11 @@
+{
+  "stock": 500,
+  "initial_stock": 500,
+  "confirmed": 0,
+  "failed": 0,
+  "available": 500,
+  "pending": 0,
+  "conserved": true,
+  "serverTime": 1793206511425,
+  "saleStart": 1793145600000
+}

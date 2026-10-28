@@ -1,0 +1,9 @@
+node_modules/
+.env
+.env.*
+!.env.example
+.evidence-build/
+*.log
+~$*.docx
+.DS_Store
+Thumbs.db
